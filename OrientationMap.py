@@ -6,6 +6,9 @@ import math
 
 import MultiTools as Tool
 
+# Algorithms use are presented in
+# "Handbook of Fingerprint Recognition", p104
+
 def generate(img, block=10, coherence=True):
     
     sobelX = ndimage.sobel(img, axis = 0)
@@ -45,8 +48,7 @@ def generate(img, block=10, coherence=True):
     else:
         return orientMap
 
-
-def generate_glissant(img, block=5, coherence=True):
+def generate_glissant(img, block=5, coherence=False):
     
     sobelX = ndimage.sobel(img, axis = 0)
     sobelY = ndimage.sobel(img, axis = 1)
@@ -86,16 +88,16 @@ if __name__ == '__main__':
     
     f, ((ax1, ax2, ax3)) = plt.subplots(1, 3, sharex='col', sharey='row')
 
-    image1 = ndimage.imread('D:\\Recherche\\DBB\\FVC2002\\DB2_B\\102_1.tif', mode = 'I')
+    image = ndimage.imread('D:\\Recherche\\DBB\\FVC2002\\DB2_B\\102_1.tif', mode = 'I')
 
-    ax1.imshow(image1,cmap=plt.cm.gray)
+    ax1.imshow(image,cmap=plt.cm.gray)
 
-    orientMap = generate(image1, 20, False)
+    orientMap = generate(image, 20, False)
 
     orientMap = ndimage.zoom(orientMap, 20, order=0)
 
     ax2.imshow(orientMap,cmap=plt.cm.hsv)
 
-    ax3.imshow(Tool.smoothingAngle(generate_glissant(image1, 20, False), 2),cmap=plt.cm.hsv)
+    ax3.imshow(Tool.smoothingAngle(generate_glissant(image, 20, False), 2),cmap=plt.cm.hsv)
 
     plt.show()
