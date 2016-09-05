@@ -7,8 +7,14 @@ To test the siamese network structure works, a simpler network was created to ex
 
 The results are good as the network can produce a test accuracy of at least 96% on test set (previously unseen) with only 1000 training iterations (tensorflow's original example needs at least 15k iterations to achieve such results)
 
-- **Updated_Siamese_net**: [Baiyu]
+- **Updated_Siamese_net**: 
 
+First a few global variables are defined: 
 
+  1. `raw_only`: a flag marks if we are only using the centered and cropped raw image;
+  
+  2. `image_size`: the size of input image;
+  
+  3. `num_layer`: the number of layers `raw_only` flag is `False`. 
 
 ## Function Documentation
