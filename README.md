@@ -19,7 +19,13 @@ First a few global variables are defined:
   
 Then 
 
+- **Pearson_NoTrain**: 
+
+From Isabelle and Cedric. This extract the Pearson Correlation Coefficient from the 6 layers, 'Original image', 'Frequency map', 'Orientation map', 'Abs orient. map', 'Variance map', 'Gabor', and achieved a AUC of 0.86 for combination of the 6 layers. 
+
 ## Function Documentation
+
+### `importFunctions` imported as `iF`
 
 `load_pairs_from_preprocessed(match_path, mismatch_path)`
 
@@ -31,3 +37,5 @@ Returns `[x, x_p, y]`, similar to the MNIST digit batch generator provided by te
 
 `suffle_all(x, x_p, y)`:
 Function to shuffle a batch
+
+`show_ROC(actual, predictions, title)`
