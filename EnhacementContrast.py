@@ -2,47 +2,40 @@ from scipy import ndimage
 import numpy as np
 
 def globalEnhacement(img):
-
-    img = img - np.min(img)
+    # The minimum value become 0
+    img -= np.min(img)
+    # And the maximum become 255
     img = 255. * img / np.max(img)
 
     return img
 
 def localEnhacement(img, block):
-
+    # Same as globalEnhacement but with
+    # its neighbour
     imgFinal = np.empty_like(img)
-
+    
     imgMin = ndimage.filters.minimum_filter(img, block)
     imgMax = ndimage.filters.maximum_filter(img, block)
     
-    imgMaxMin = imgMax - imgMin
-    del imgMax
-    
     imgFinal = (img - imgMin) * 255.
-    del imgMin
     
-    for i in range(len(img)):
-        for j in range(len(img[0])):
-            
-            maxmin = imgMaxMin[i][j]
+    imgMax -= imgMin
 
-            if(maxmin<20):
-                imgFinal[i][j] = img[i][j]
-            else:
-                imgFinal[i][j] /= maxmin
+    imgFinal /= imgMax
 
+    # To deal with the part to uniform (include div by 0)
+    imgFinal = np.where(imgMax<30, img, imgFinal)
+    
     return imgFinal
-
 
 # If you lauch this file alone :
 if __name__ == '__main__':
     print "Laugtching as Script"
-
     import matplotlib.pyplot as plt
 
     image1 = ndimage.imread('D:\\Recherche\\DBB\\FVC2002\\DB3_B\\102_1.tif')
-    image2 = ndimage.imread('D:\\Recherche\\DBB\\PERSO\\14_3.png')
-    image3 = ndimage.imread('D:\\Recherche\\DBB\\PERSO\\2_2.png')
+    image2 = ndimage.imread('D:\\Recherche\\DBB\\FVC2002\\DB2_B\\103_5.tif')
+    image3 = ndimage.imread('3.tif')
 
     sizeX, sizeY = image1.shape
     f, ((ax1, ax2, ax3), (ax4, ax5, ax6)) = plt.subplots(2, 3, sharex='col', sharey='row')

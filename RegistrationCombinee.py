@@ -15,17 +15,22 @@ def apercu(plot, image, nom = ''):
     ax1.imshow(image, interpolation='nearest', cmap = mpl.cm.gray)
 
 def registration(img1, img2, coord=False):
-
+    # Detect the center of the two fingerprint
     center1, center2 = RegSimple.registration(img1, img2)
 
+    # Choose the maximum ray possible around center1 without
+    # exit the limit and extract this piece
     r = min(min(center1[0], img1.shape[0]-center1[0]), min(center1[1], img1.shape[1]-center1[1]))//4
     piece_img1 = img1[center1[0]-r:center1[0]+r, center1[1]-r:center1[1]+r]
 
+    # Lauch bruteForce around the center to have a rough estimation
+    # of the final registeration
     x, y, angle = RegBrute.bruteForce(piece_img1, img2, r, 3, 2, -50, 50, max(0, center2[0]-5), min(len(img2), center2[0]+5), max(0, center2[1]-5), min(len(img2[0]), center2[1]+5))
+    # And an other time, more precise, to have the real registeration
     x, y, angle = RegBrute.bruteForce(piece_img1, img2, r, 1, 1, angle-8, angle+8, max(0, center2[0]-5), min(len(img2), center2[0]+5), max(0, center2[1]-5), min(len(img2[0]), center2[1]+5))
 
+    # Apply registeration
     rotate_img2 = ndimage.rotate(img2, angle, order = 1, reshape = False, cval = 255.)
-
     center_image1, center_image2 = Tool.padCenters(img1, rotate_img2, center1, (x, y))
 
     if coord:

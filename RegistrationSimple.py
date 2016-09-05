@@ -4,19 +4,7 @@ import numpy as np
 import InterfacePreprocessing as InterPre
 import MultiTools as Tool
 
-
-def simple(img):
-    new_img = np.zeros(img.shape)
-    for i in range(1, len(img)-1):
-        for j in range(1, len(img[0])-1):
-            nb = img[i+1][j]+img[i-1][j]+img[i][j-1]+img[i][j+1]
-            if nb>2:
-                new_img[i][j] = 1
-    return new_img
-
-
 def registration(img1, img2):
-    seg_block = 10
     or_img1 = abs(InterPre.orientation(img1, 30, coherence=False))
     or_img2 = abs(InterPre.orientation(img2, 30, coherence=False))
 
@@ -24,24 +12,12 @@ def registration(img1, img2):
     coh_img2 = InterPre.variance(or_img2, 5, moving=True, fast=True)
 
     ## VarMap binaire
-    seg_image1 = InterPre.variance(img1, seg_block, resize=False)
-    seg_image2 = InterPre.variance(img2, seg_block, resize=False)
+    seg_image1 = InterPre.variance(img1, 20, resize=False)
+    seg_image2 = InterPre.variance(img2, 20, resize=False)
+    seg_image1 = Tool.binarise(seg_image1, 40)
+    seg_image2 = Tool.binarise(seg_image2, 40)
 
-    Tool.binarise(seg_image1, 700)
-    Tool.binarise(seg_image2, 700)
-    
-    seg_image1 = simple(seg_image1)
-    seg_image1 = simple(seg_image1)
-    seg_image1 = simple(seg_image1)
-    
-    seg_image2 = simple(seg_image2)
-    seg_image2 = simple(seg_image2)
-    seg_image2 = simple(seg_image2)
-    
-    seg_image1 = Tool.zoom(seg_image1, coh_img1.shape)
-    seg_image2 = Tool.zoom(seg_image2, coh_img2.shape)
-
-    ## Registration
+    # Detect the center of the fingerprint
     def maximum(img):
         for i in range(len(img)):
             for j in range(len(img[0])):
@@ -98,10 +74,10 @@ if __name__ == '__main__':
     center1, center2 = registration(crop_image1, crop_image2)
     center_image1, center_image2 = Tool.padCenters(crop_image1, crop_image2, center1, center2)
     
-    apercu(4, crop_image1[center1[0]-30:center1[0]+30, center1[1]-30:center1[1]+30], 'Commun')
-    apercu(10, crop_image2[center2[0]-30:center2[0]+30, center2[1]-30:center2[1]+30], 'Commun')
+    apercu(4, crop_image1[center1[0]-30:center1[0]+30, center1[1]-30:center1[1]+30], 'Center')
+    apercu(10, crop_image2[center2[0]-30:center2[0]+30, center2[1]-30:center2[1]+30], 'Center')
 
-    apercu(6, center_image1*0.5 + center_image2*0.5, 'Coherence')
+    apercu(6, center_image1 + center_image2, 'Coherence')
     apercu(12, center_image2, 'Coherence')
 
     plt.show()

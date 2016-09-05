@@ -1,8 +1,16 @@
 import numpy as np
 from scipy import ndimage
+from scipy.misc import imresize
+from PIL import Image
 
+def showImg(img):
+    img -= np.min(img)
+    img /= (np.max(img) / 255.)
+    Image.fromarray(img.astype(np.int32), 'I').show()
+
+# Gauss filter for angles map
 def smoothingAngle(img, sigma):
-    img = img * 2.0
+    img = img * 2.
     imgSin = np.sin(img)
     imgCos = np.cos(img)
 
@@ -12,26 +20,9 @@ def smoothingAngle(img, sigma):
     return 0.5 * np.arctan2(imgSin, imgCos)
 
 def zoom(img, shape):
-    #ndimage.zoom(orientMap, 20, order=0)
-    
-    x, y = img.shape
+    return imresize(img, shape, interp='nearest')
 
-    r = shape[0]//x
-    
-    bigImg = np.zeros(shape, dtype=img.dtype)
-
-    for i in range(x):
-        for j in range(y):
-            bigImg[i*r:(i+1)*r,j*r:(j+1)*r] = img[i][j]
-
-    for i in range(x*r, shape[0]):
-        bigImg[i] = bigImg[x*r-1]
-
-    for j in range(y*r, shape[1]):
-        bigImg[:,j] = bigImg[:,y*r-1]
-
-    return bigImg
-
+# Pad images to have the same size
 def padMax(img1, img2, constant=255):
     
     difX = img1.shape[0] - img2.shape[0]
@@ -50,6 +41,8 @@ def padMax(img1, img2, constant=255):
 
     return img1, img2
 
+# Pad images to have the same size and when
+# you superpose them, centers are superposed
 def padCenters(img1, img2, center1, center2, cropLess=False, lesDeux=False):
     xCen, yCen = center1
     x, y = center2
@@ -77,10 +70,5 @@ def padCenters(img1, img2, center1, center2, cropLess=False, lesDeux=False):
 def binarise(img, med=None):
     if med==None:
         med = np.average(img)
-        
-    for i in range(len(img)):
-        for j in range(len(img[0])):
-            if img[i][j] < med:
-                img[i][j] = 0
-            else:
-                img[i][j] = 1
+
+    return np.where(img<med, 0, 1)

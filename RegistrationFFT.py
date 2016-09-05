@@ -11,8 +11,6 @@ from PIL import Image
 
 xLogpolar = None
 yLogpolar = None
-translation = None
-rotation = None
 
 def pre_logpolar(shape):
     # Source : http://www.lfd.uci.edu/~gohlke/code/imreg.py.html
@@ -30,26 +28,6 @@ def pre_logpolar(shape):
     xLogpolar = radius * np.sin(theta) + center[0]
     yLogpolar = radius * np.cos(theta) + center[1]
 
-
-    #Filtre pour la translation
-    global translation
-    translation = np.empty(shape, dtype=float)
-    x, y = shape
-    x, y = float(x), float(y)
-    for i in range(int(x)):
-        for j in range(int(y)):
-            translation[i][j] = abs((i/x)+(j/y)-1)
-
-    
-    #Filtre pour la rotation
-    global rotation
-    rotation = np.empty(shape, dtype=float)
-    x, y = shape
-    x, y = float(x), float(y)
-    for i in range(int(x)):
-        for j in range(int(y)):
-            rotation[i][j] = abs((i/x)-0.5)
-
 def logpolar(img):
     global xLogpolar
     global yLogpolar
@@ -57,24 +35,9 @@ def logpolar(img):
     ndii.map_coordinates(img, [xLogpolar, yLogpolar], output=output)
     return output
 
+# https://en.wikipedia.org/wiki/Phase_correlation#Method
 def calc_phase(FFT1, FFT2):
     temp = abs(ifftn((FFT1 * FFT2.conjugate()) / (abs(FFT1) * abs(FFT2))))
-    return np.unravel_index(np.argmax(temp), temp.shape)
-
-def calc_phase_rotation(FFT1, FFT2):
-    temp = abs(ifftn((FFT1 * FFT2.conjugate()) / (abs(FFT1) * abs(FFT2))))
-    
-    global rotation
-    temp = temp * rotation
-    
-    return np.unravel_index(np.argmax(temp), temp.shape)
-
-def calc_phase_translation(FFT1, FFT2):
-    temp = abs(ifftn((FFT1 * FFT2.conjugate()) / (abs(FFT1) * abs(FFT2))))
-    
-    global translation
-    temp = temp * translation
-    
     return np.unravel_index(np.argmax(temp), temp.shape)
 
 def registration(img1, img2, value = False):
@@ -86,6 +49,8 @@ def registration(img1, img2, value = False):
     t1 = fftshift(abs(FFT1))
     t2 = fftshift(abs(fftn(img2)))
 
+    # Change cartesian space to logpolar
+    # (to find easly rotation (and zoom)
     t1 = logpolar(t1)
     t2 = logpolar(t2)
 
@@ -97,13 +62,12 @@ def registration(img1, img2, value = False):
     elif angle > 90.0:
         angle -= 180.0
 
-    print angle
-
     if 2>angle>-2 or angle>30 or angle<-35:
         angle = 0
 
     img2_r = ndii.rotate(img2, angle, order = 1, mode = 'reflect', reshape = False, cval = np.max(img2))
 
+    # Now find translation
     x, y = calc_phase(FFT1, fftn(img2_r))
     
     if x > height // 2:
@@ -115,11 +79,8 @@ def registration(img1, img2, value = False):
         return angle, x, y
     
     img1 = img1[max(0, x):min(x, 0)+height,max(0, y):min(y, 0)+width]
-    # Il faudrait pouvoir enlever cette ligne car elle consomme
     img2_r = ndii.rotate(img2, angle, order = 1, reshape = False, cval = np.max(img2))
     img2 = img2_r[max(-x, 0):min(-x, 0)+height, max(-y, 0):min(-y, 0)+width]
-
-    print x, y
 
     return img1, img2
 

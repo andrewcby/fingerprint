@@ -9,12 +9,15 @@ import MultiTools as Tool
 def bruteForce(center_img1, img2, r, pasOr, pasTr, orMin, orMax, xMin, xMax, yMin, yMax):
     corMin = -1
     x, y, angle = 0, 0, 0
+    # Test each possible orientations and translation
+    # to find the best corelation
     for k in  range(orMin, orMax, pasOr):
         rotate_image2 = ndimage.rotate(img2, k, order = 0, reshape = False, cval = 255.)
         for i in range(xMin, xMax, pasTr):
             for j in range(yMin, yMax, pasTr):
                 center_img2 = rotate_image2[i-r:i+r,j-r:j+r]
 
+                # Calculate the correlation
                 temp1 = center_img1 - np.average(center_img1)
                 temp2 = center_img2 - np.average(center_img2)
                 temp = np.multiply(temp1, temp2)
@@ -24,13 +27,11 @@ def bruteForce(center_img1, img2, r, pasOr, pasTr, orMin, orMax, xMin, xMax, yMi
                 if corMin<correl:
                     corMin = correl
                     x, y, angle = i, j, k
-                    #print x, y, angle, corMin
                 
 ##                correl = np.sum(abs(center_img1 - center_img2))
 ##                if corMin>correl or corMin<0:
 ##                    corMin = correl
 ##                    x, y, angle = i, j, k
-##                    #print x, y, angle, corMin
     return x, y, angle
 
 
@@ -38,9 +39,11 @@ def registration(img1, img2, r=None, cropLess=False, lesDeux=False):
     if r==None:
         r = min(min(img1.shape), min(img2.shape))//4
 
+    # Extract a part of the original image
     xCen, yCen = img1.shape[0]//2, img1.shape[1]//2
     center_img1 = img1[xCen-r:xCen+r,yCen-r:yCen+r]
 
+    # Registeration with a smaller step each time
     xMin, xMax, yMin, yMax = r, len(img2)-r, r, len(img2[0])-r
     x, y, angle = bruteForce(center_img1, img2, r, 6, 4, -40, 40, xMin, xMax, yMin, yMax)
     x, y, angle = bruteForce(center_img1, img2, r, 2, 2, angle-6, angle+6, max(xMin, x-4), min(xMax, x+4), max(yMin, y-4), max(yMax, y+4))

@@ -25,9 +25,8 @@ import copy
 
 anglMap = []
 
+# Generate a Gaussian mask
 def gkern2(kernlen=21, nsig=3):
-    """Returns a 2D Gaussian kernel array."""
-
     # create nxn zeros
     inp = np.zeros((kernlen, kernlen))
     # set element at the middle to one, a dirac delta
@@ -35,14 +34,14 @@ def gkern2(kernlen=21, nsig=3):
     # gaussian-smooth the dirac, resulting in a gaussian filter mask
     return filters.gaussian_filter(inp, nsig)
 
-# fonction de normalisation
+# Return the norm of a number (for show)
 def norma(mat):
     mat1 = mat.real
     mat1 -= mat1.min()
     mat1 *= 255. / mat1.max()
     return mat1
 
-#fonction de normailsation sur une echelle logarithmique
+# function the log norm of a number (for show)
 def normalog(mat):
     mat1 = norma(mat)
     mat1 = np.log(1 + mat1)
@@ -55,6 +54,8 @@ def dec(a, b):
         return 0.
     return b / (a + b)
 
+# Augment the precision of the localisation
+# of the maximum using the neighbour of it
 def maxPrecision((x, y), img):
     height, width = img.shape
 
@@ -67,37 +68,20 @@ def maxPrecision((x, y), img):
        yNew += dec(c, img[x][y+1]) - dec(c, img[x][y-1])
     return (xNew, yNew)
 
-def multiMax(img, col = 0):
-    height, width = img.shape
-
-    maxBig = (0, 0, 0.)
-    maxMed = (0, 0, 0.)
-    for i in range(height):
-        for j in range(width):
-            val = img[i][j]
-            if val >= maxBig[2]:
-                # Make a deepcopy
-                maxMed = maxBig+tuple()
-                maxBig = (i, j, val)
-            elif val > maxMed[2]:
-                maxMed = (i, j, val)
-    if maxBig[0]>maxMed[0]:
-        maxBig, maxMed = maxMed, maxBig
-
-    return (maxBig[:2], maxMed[:2])
-
+# Extract information (angle, freq and proba) from the FFT image
 def extractInfo(img, doAngle=True, doFrequ=True, doProb=True):
-    global anglMap
-    
+
     height, width = img.shape
 
-    imgHole = copy.deepcopy(img)
-
-    tmpSum = np.sum(imgHole * imgHole)
+    tmpSum = np.sum(img * img)
     if tmpSum == 0:
         return (0., 0., 0.)
 
+    # Algorithme proposed in "Fingerprint enhancement using STFT analysis"
+    # (doi = 10.1016/j.patcog.2006.05.036), page 204
     if doAngle:
+        global anglMap
+        
         center = (height/2, width/2)
         
         probaAngle = {}
@@ -105,15 +89,14 @@ def extractInfo(img, doAngle=True, doFrequ=True, doProb=True):
         for i in range(height):
             for j in range(width):
                 
-                proba = math.pow(imgHole[i][j], 2) / tmpSum
+                proba = math.pow(img[i][j], 2) / tmpSum
                 
                 angl = anglMap[i][j]
-                    
+                
                 if probaAngle.has_key(angl):
-                    temp = probaAngle.get(angl)
-                    probaAngle[angl] = temp + imgHole[i][j]
+                    probaAngle[angl] = probaAngle.get(angl) + img[i][j]
                 else:
-                    probaAngle[angl] = imgHole[i][j]
+                    probaAngle[angl] = img[i][j]
 
         tempA = 0
         tempB = 0
@@ -125,19 +108,18 @@ def extractInfo(img, doAngle=True, doFrequ=True, doProb=True):
     else:
         angle = 0.
 
-    a, b = multiMax(imgHole)
+    a = np.unravel_index(img.argmax(), img.shape)
 
+    # Use the intensity of the maximum to determine
+    # the certainty of the estimation
     if doProb:
-        proba = math.pow(imgHole[a[0]][a[1]]*2.0, 2) / tmpSum
+        proba = math.pow(img[a[0]][a[1]]*2.0, 2) / tmpSum
     else:
         proba = 0.
-    
-    #xTemp, yTemp = b[0]-a[0], b[1]-a[1]
-    #angle = np.arctan2(yTemp, xTemp)
 
     if doFrequ:
         a = maxPrecision(a, img)
-        b = maxPrecision(b, img)
+        b = (height//2, width//2)
     
         frequence = pdist((a, b), 'euclidean')[0]
     else:
@@ -148,24 +130,27 @@ def extractInfo(img, doAngle=True, doFrequ=True, doProb=True):
 def mapping(img, block = 15, step = 2, doAngle=True, doFrequ=True, doProb=True):
     height, width = img.shape
 
-    # Hanning Windows
+    # Cosine windows
     bw2d = np.outer(signal.cosine(block), np.ones(block))
-    #bw2d = np.outer(signal.hanning(block), np.ones(block))
+    # Hanning windows
+    # bw2d = np.outer(signal.hanning(block), np.ones(block))
+
+    # Transform 1D to 2D windows
     bw2d = np.sqrt(bw2d * bw2d.T)
 
     center = (block//2, block-block//2)
 
-    # Creation coordinate maps
+    # Create coordinate maps (use for orientationMap)
     global anglMap
     anglMap = np.empty((block, block))
     for i in range(block):
         for j in range(block):
             anglMap[i][j] = np.arctan2(i-center[0], j-center[1])
 
+    # For the edge effect
     tmpImg = np.pad(img, (center,center), 'reflect')
-    
-    #x, y = height//block, width//block
-    
+
+    # Creation of the three new images
     result = []
     for i in range(0, height, step):
         temp = []
@@ -174,13 +159,15 @@ def mapping(img, block = 15, step = 2, doAngle=True, doFrequ=True, doProb=True):
 
             # Apply the window
             piece = np.multiply(piece - np.average(piece), bw2d)
-            
+
+            # FFT
             imgFFT = fftn(piece)
-            imgFFT_Abs = abs(imgFFT)
+            imgFFT = np.abs(imgFFT)
+            
+            imgFFT = fftshift(imgFFT)
 
-            imgFinal = fftshift(imgFFT_Abs)
-
-            temp.append(extractInfo(imgFinal, doAngle, doFrequ, doProb))
+            # Extract imformations (or, freq, prob)
+            temp.append(extractInfo(imgFFT, doAngle, doFrequ, doProb))
         result.append(temp)
 
     return result
@@ -214,8 +201,8 @@ def smoothingFreq(maps, block = 10, sigma = 1.5):
 
 # If you lauch this file alone :
 if __name__ == '__main__':
-    image1 = ndimage.imread('Sans titre.png', mode = 'L')
-    #image1 = ndimage.imread('chikkerur2007.png', mode = 'L')
+    #image1 = ndimage.imread('Sans titre.png', mode = 'L')
+    image1 = ndimage.imread('chikkerur2007.png', mode = 'L')
     #image1 = ndimage.imread('D:\\Recherche\\DBB\\FVC2002\\DB2_B\\108_3.tif', mode = 'L')
     #image1 = ndimage.imread('D:\\Recherche\\DBB\\Pack Similaire\\u01_o_fc_li_01.bmp', mode = 'L')
     #image1 = ndimage.imread('./Tests/FFT_4_36.png', mode = 'L')
