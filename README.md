@@ -16,5 +16,19 @@ First a few global variables are defined:
   2. `image_size`: the size of input image;
   
   3. `num_layer`: the number of layers `raw_only` flag is `False`. 
+  
+Then 
 
 ## Function Documentation
+
+`load_pairs_from_preprocessed(match_path, mismatch_path)`
+
+Returns `images_match, images_mismatch`, two dictionaies of images with `num_layer` layers and key'ed like `1_0`, `1_1`.
+
+`generate_batch_pairs_from_preprocessed(images_match, images_mismatch, num, image_size)`
+
+Returns `[x, x_p, y]`, similar to the MNIST digit batch generator provided by tensorflow. Output is a list, with the first two items are an matrix of `num` rows and `image_size * image_size * num_layer` columns; the third item is a matrix of `num` rows and 1 columns, with 1 if the two finger prints are a match and 0 if they are not a match. 
+
+
+`suffle_all(x, x_p, y)`:
+Function to shuffle a batch
