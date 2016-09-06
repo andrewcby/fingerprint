@@ -47,8 +47,8 @@ if __name__ == '__main__':
     import matplotlib as mpl
     import matplotlib.pyplot as plt
 
-    image1 = ndimage.imread('D:\\Recherche\\DBB\\FVC2004\\DB1_B\\103_1.tif', mode = 'I')
-    image2 = ndimage.imread('D:\\Recherche\\DBB\\FVC2004\\DB1_B\\102_8.tif', mode = 'I')
+    image1 = ndimage.imread('D:\\Recherche\\DBB\\CASIA-FingerprintV5(BMP)\\014\\L\\014_L3_1.bmp', mode = 'I')
+    image2 = ndimage.imread('D:\\Recherche\\DBB\\CASIA-FingerprintV5(BMP)\\014\\L\\014_L3_2.bmp', mode = 'I')
 
     fig = plt.figure()
 
