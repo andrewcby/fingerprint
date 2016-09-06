@@ -52,7 +52,8 @@ def dec(a, b):
     a, b = float(a), float(b)
     if (a+b)==0:
         return 0.
-    return b / (a + b)
+    b *= b
+    return b / (a*a + b)
 
 # Augment the precision of the localisation
 # of the maximum using the neighbour of it
