@@ -92,7 +92,8 @@ def suffle_all(x, x_p, y):
     x_p_shuffle = []
     y_shuffle = []
     
-    shuffle = random.shuffle(range(len(x)))
+    shuffle = range(len(x))
+    random.shuffle(shuffle)
     
     for i in shuffle:
         x_shuffle.append(x[i])
@@ -104,7 +105,6 @@ def suffle_all(x, x_p, y):
 def show_ROC(actual, predictions, title):
     false_positive_rate, true_positive_rate, thresholds = roc_curve(actual, predictions)
     roc_auc = auc(false_positive_rate, true_positive_rate)
-    
     plt.title(title)
     plt.plot(false_positive_rate, true_positive_rate, 'b', label='AUC = %0.2f'% roc_auc)
     plt.legend(loc='lower right')
@@ -113,4 +113,5 @@ def show_ROC(actual, predictions, title):
     plt.ylim([-0.1,1.2])
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
+    plt.figure(figsize=(100, 100), dpi= 80, facecolor='w', edgecolor='k')
     plt.show()
