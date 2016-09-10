@@ -43,11 +43,13 @@ def padMax(img1, img2, constant=255):
 
 # Pad images to have the same size and when
 # you superpose them, centers are superposed
-def padCenters(img1, img2, center1, center2, cropLess=False, lesDeux=False):
+def padCenters(img1, img2, center1, center2, cropLess=False, lesDeux=False, dec=False):
     xCen, yCen = center1
     x, y = center2
 
     xDif, yDif = xCen - x, yCen - y
+
+    firstPad = (xDif, yDif)
 
     center_img2 = np.pad(img2, ((max(0, xDif), 0), (max(0, yDif), 0)), mode='constant', constant_values=255)
     center_img1 = np.pad(img1, ((max(0, -xDif), 0), (max(0, -yDif), 0)), mode='constant', constant_values=255)
@@ -65,6 +67,8 @@ def padCenters(img1, img2, center1, center2, cropLess=False, lesDeux=False):
         return (center_img1[xMin:-xMax,yMin:-yMax], center_img2[xMin:-xMax,yMin:-yMax])
     if lesDeux:
         return ((center_img1, center_img2), (xMin,xMax,yMin,yMax))
+    if dec:
+        return ((center_img1, center_img2), firstPad)
     return (center_img1, center_img2)
 
 def binarise(img, med=None):

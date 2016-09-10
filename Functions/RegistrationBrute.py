@@ -9,29 +9,31 @@ import MultiTools as Tool
 def bruteForce(center_img1, img2, r, pasOr, pasTr, orMin, orMax, xMin, xMax, yMin, yMax):
     corMin = -1
     x, y, angle = 0, 0, 0
+    w, h = len(img2), len(img2[0])
     # Test each possible orientations and translation
     # to find the best corelation
     for k in  range(orMin, orMax, pasOr):
         rotate_image2 = ndimage.rotate(img2, k, order = 0, reshape = False, cval = 255.)
         for i in range(xMin, xMax, pasTr):
             for j in range(yMin, yMax, pasTr):
-                center_img2 = rotate_image2[i-r:i+r,j-r:j+r]
+                if w-r>i>=r and h-r>j>=r:
+                    center_img2 = rotate_image2[i-r:i+r,j-r:j+r]
+                    
+                    # Calculate the correlation
+                    temp1 = center_img1 - np.average(center_img1)
+                    temp2 = center_img2 - np.average(center_img2)
+                    temp = np.multiply(temp1, temp2)
+                    temp = np.sum(temp)/(temp2.shape[0] * temp2.shape[1])
+                    correl = temp
 
-                # Calculate the correlation
-                temp1 = center_img1 - np.average(center_img1)
-                temp2 = center_img2 - np.average(center_img2)
-                temp = np.multiply(temp1, temp2)
-                temp = np.sum(temp)/(temp2.shape[0] * temp2.shape[1])
-                correl = temp
-
-                if corMin<correl:
-                    corMin = correl
-                    x, y, angle = i, j, k
-                
-##                correl = np.sum(abs(center_img1 - center_img2))
-##                if corMin>correl or corMin<0:
-##                    corMin = correl
-##                    x, y, angle = i, j, k
+                    if corMin<correl:
+                        corMin = correl
+                        x, y, angle = i, j, k
+                    
+    ##                correl = np.sum(abs(center_img1 - center_img2))
+    ##                if corMin>correl or corMin<0:
+    ##                    corMin = correl
+    ##                    x, y, angle = i, j, k
     return x, y, angle
 
 

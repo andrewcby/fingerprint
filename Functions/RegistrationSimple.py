@@ -4,6 +4,11 @@ import numpy as np
 import InterfacePreprocessing as InterPre
 import MultiTools as Tool
 
+def etale(img):
+    if np.sum(img)>(len(img)-3):
+        return 1
+    return 0
+
 def registration(img1, img2):
     or_img1 = abs(InterPre.orientation(img1, 30, coherence=False))
     or_img2 = abs(InterPre.orientation(img2, 30, coherence=False))
@@ -16,6 +21,9 @@ def registration(img1, img2):
     seg_image2 = InterPre.variance(img2, 20, resize=False)
     seg_image1 = Tool.binarise(seg_image1, 40)
     seg_image2 = Tool.binarise(seg_image2, 40)
+
+    seg_image1 = ndimage.filters.generic_filter(seg_image1, etale, size=(20, 20))
+    seg_image2 = ndimage.filters.generic_filter(seg_image2, etale, size=(20, 20))
 
     # Detect the center of the fingerprint
     def maximum(img):
@@ -47,8 +55,8 @@ if __name__ == '__main__':
         ax1.imshow(image, interpolation='nearest', cmap = mpl.cm.gray)
 
 
-    image1 = ndimage.imread('D:\\Recherche\\DBB\\FVC2002\\DB2_B\\102_1.tif', mode = 'I')
-    image2 = ndimage.imread('D:\\Recherche\\DBB\\FVC2002\\DB2_B\\109_1.tif', mode = 'I')
+    image1 = ndimage.imread('D:\\Recherche\\DBB\\CASIA-FingerprintV5(BMP)\\014\\L\\014_L3_1.bmp', mode = 'I')
+    image2 = ndimage.imread('D:\\Recherche\\DBB\\CASIA-FingerprintV5(BMP)\\014\\L\\014_L3_2.bmp', mode = 'I')
 
     ## Raw Images
     apercu(1, image1, 'Image 1')
