@@ -61,10 +61,10 @@ def generate_maps(img, name, path, (xmin, xmax, ymin, ymax)):
         ymin = margin
     if w-ymax>margin:
         img = img[:,:ymax+margin]
-
+        
     # FreqMap are the slowest step, but they can work
     # faster with step=2 or 3
-    FreqMap = InterPre.frequency(img, block=20, step=1, smoothFreq=True)[xmin:xmax,ymin:ymax]
+    FreqMap = InterPre.frequency(img, block=20, step=1, smoothFreq=False)[xmin:xmax,ymin:ymax]
     scipy.misc.toimage(FreqMap, cmin=np.min(FreqMap), cmax=np.max(FreqMap)).save(path + '_1.png')
     
     OrMap = InterPre.orientation(img, 30)[xmin:xmax,ymin:ymax]
@@ -126,33 +126,34 @@ def do_all(img_in1, img_in2, path_out, rect):
     ID += 1
 
 def generate_random_path():
-    num = str(randint(0,4)) + str(randint(0,4)) + str(randint(0,4))
+    num = num = '{:03}'.format(randint(0,104))
     side = random.choice(["L","R"])
-    file = num + "_" + side + str(randint(0,3)) + "_" + str(randint(0,4)) + ".bmp"
+    filename = num + "_" + side + str(randint(0,3)) + "_" + str(randint(0,4)) + ".bmp"
 
-    return num + "/" + side + "/" + file
+    return num + "/" + side + "/" + filename
 
 def fast_create_match_set(path_in, path_out, n, rect=(-50, 50, -50, 50)):
     
     for i in range(n):
-        num = str(randint(0,4)) + str(randint(0,4)) + str(randint(0,4))
+        print 'Match On', i
+        num = '{:03}'.format(randint(0,104))
         side = random.choice(["L","R"])
         other = str(randint(0,3))
 
-        file = path_in + num + "/" + side + "/" + num + "_" + side + other + "_"
+        filename = path_in + num + "/" + side + "/" + num + "_" + side + other + "_"
 
         tmp = [str(j) for j in range(5)]
         
-        path_1 = file + tmp.pop(randint(0, 4)) + ".bmp"
+        path_1 = filename + tmp.pop(randint(0, 4)) + ".bmp"
 
-        path_2 = file + tmp.pop(randint(0, 3)) + ".bmp"
+        path_2 = filename + tmp.pop(randint(0, 3)) + ".bmp"
         
         do_all(path_1, path_2, path_out, rect)
 
 def fast_create_mismatch_set(path_in, path_out, n, rect=(-50, 50, -50, 50)):
     
     for i in range(n):
-
+        print 'Mismatch On', i
         path_1 = path_in + generate_random_path()
 
         path_2 = path_1
@@ -162,6 +163,26 @@ def fast_create_mismatch_set(path_in, path_out, n, rect=(-50, 50, -50, 50)):
         
         do_all(path_1, path_2, path_out, rect)
 
-fast_create_match_set("./CASIA/", "./Preprocessed_CASIA", 3, rect=(-90, 90, -90, 90))
+def fast_process_all(path_in, path_out, n, rect=(-50, 50, -50, 50)):
+    sides = ["L","R"]
+    for i in range(n):
+        print 'On', i
+        num = '{:03}'.format(i)
+        for side in sides:
+            for finger in range(4):
+                for img_num in range(2):
+                    finger1 = str(img_num*2)
+                    finger2 = str(img_num*2+1)
+
+                    filename = path_in + num + "/" + str(side) + "/" + num + "_" + str(side) + str(finger) + "_" 
+        
+                    path_1 = filename + finger1 + ".bmp"
+
+                    path_2 = filename + finger2 + ".bmp"
+                    
+                    do_all(path_1, path_2, path_out, rect)
+
+fast_create_match_set("./CASIA/", "./Preprocessed_CASIA/Match/", 3000, rect=(-75, 75, -75, 75))
+fast_create_mismatch_set("./CASIA/", "./Preprocessed_CASIA/MisMatch/", 3000, rect=(-75, 75, -75, 75))
 
 #do_all("D:/Recherche/DBB/CASIA-FingerprintV5(BMP)/313/R/313_R2_2.bmp", "D:/Recherche/DBB/CASIA-FingerprintV5(BMP)/313/R/313_R2_0.bmp", "D:/Recherche/Programmation/SetCreator/", rect=(-90, 90, -90, 90))
