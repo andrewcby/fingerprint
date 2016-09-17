@@ -1,0 +1,21 @@
+Match On 0
+Traceback (most recent call last):
+  File "SetCreator.py", line 185, in <module>
+    fast_create_match_set("./CASIA/", "./Preprocessed_CASIA/Match/", 3000, rect=(-75, 75, -75, 75))
+  File "SetCreator.py", line 151, in fast_create_match_set
+    do_all(path_1, path_2, path_out, rect)
+  File "SetCreator.py", line 102, in do_all
+    seg_img2 = InterPre.variance(img2, 10)
+  File "/home/baiyu/Fingerprint_Project/fingerprint/Functions/InterfacePreprocessing.py", line 119, in variance
+    return Var.varianceMap_glisse(img, block)
+  File "/home/baiyu/Fingerprint_Project/fingerprint/Functions/Variance.py", line 38, in varianceMap_glisse
+    return ndimage.filters.generic_filter(img, np.std, size=block)
+  File "/home/baiyu/anaconda2/lib/python2.7/site-packages/scipy/ndimage/filters.py", line 1187, in generic_filter
+    cval, origins, extra_arguments, extra_keywords)
+  File "/home/baiyu/anaconda2/lib/python2.7/site-packages/numpy/core/fromnumeric.py", line 2992, in std
+    keepdims=keepdims)
+  File "/home/baiyu/anaconda2/lib/python2.7/site-packages/numpy/core/_methods.py", line 124, in _std
+    keepdims=keepdims)
+  File "/home/baiyu/anaconda2/lib/python2.7/site-packages/numpy/core/_methods.py", line 105, in _var
+    x = um.multiply(x, x, out=x)
+KeyboardInterrupt
