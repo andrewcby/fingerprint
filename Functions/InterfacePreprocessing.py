@@ -84,7 +84,7 @@ def frequency(img, block=15, step=2, smoothFreq=False, smoothFreqBlock=20, smoot
     """
 
     maps = OrFrMapFFT.mapping(img, block, step, False, True, smoothFreq)
-
+    
     if smoothFreq:
         tmp = OrFrMapFFT.smoothingFreq(maps, smoothFreqBlock, smoothFreqSigma)
         if step>1:
