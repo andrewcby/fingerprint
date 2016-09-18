@@ -27,9 +27,11 @@ From Isabelle and Cedric. This extract the Pearson Correlation Coefficient from 
 
 ### `importFunctions` imported as `iF`
 
-`load_pairs_from_preprocessed(match_path, mismatch_path)`
+`load_pairs_from_preprocessed(match_path, mismatch_path, image_size, num_layer, small_set=True)`
 
-Returns `images_match, images_mismatch`, two dictionaies of images with `num_layer` layers and key'ed like `1_0`, `1_1`.
+If 'small_set' is 'True', then returns `images_match, images_mismatch`, two dictionaies of images with `num_layer` layers and key'ed like `1_0`, `1_1`, with data generated from Cedric's smaller 94-pairs-each data set.
+
+If 'small_set' is 'False', then returns with the larger dataset. Notice that the IDs are not continuous, due to the fact that some pairs have low image quality and they do not qualify for training.
 
 `generate_batch_pairs_from_preprocessed(images_match, images_mismatch, num, image_size)`
 
@@ -39,3 +41,7 @@ Returns `[x, x_p, y]`, similar to the MNIST digit batch generator provided by te
 Function to shuffle a batch
 
 `show_ROC(actual, predictions, title)`
+
+### In `Updated_Siamese_net`
+
+`load_pairs_from_preprocessed(match_path, mismatch_path, small_set=True)`

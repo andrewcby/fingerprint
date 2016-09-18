@@ -14,27 +14,65 @@ from PIL import Image
 from scipy.ndimage import imread
 from scipy.misc import imresize
 from sklearn.metrics import roc_curve, auc
+from scipy import misc
 
-def load_pairs_from_preprocessed(match_path, mismatch_path, image_size, num_layer):
+def load_pairs_from_preprocessed(match_path, mismatch_path, image_size, num_layer, small_set=True):
+    # Notice that the preprocessed data has 94 images for match and mismatch each
+
     images_match = dict()
-
-    for ID in range(94):
-        for pic in range(2):
-            image_temp = np.zeros((image_size,image_size,num_layer))
-            for layer in range(num_layer):
-                fname = str(ID+1)+'_'+str(pic)+'_'+str(layer)+'.png'
-                image_temp[:,:,layer] = imresize(imread(match_path+fname),[image_size,image_size],interp='bicubic')
-            images_match[str(ID+1)+'_'+str(pic)] = image_temp
-    
     images_mismatch = dict()
 
-    for ID in range(94):
-        for pic in range(2):
-            image_temp = np.zeros((image_size,image_size,num_layer))
-            for layer in range(num_layer):
-                fname = str(ID+1)+'_'+str(pic)+'_'+str(layer)+'.png'
-                image_temp[:,:,layer] = imresize(imread(mismatch_path+fname),[image_size,image_size],interp='bicubic')
-            images_mismatch[str(ID+1)+'_'+str(pic)] = image_temp
+    if small_set:
+
+        for ID in range(94):
+            for pic in range(2):
+
+                image_temp1 = np.zeros((image_size,image_size,num_layer))
+                image_temp2 = np.zeros((image_size,image_size,num_layer))
+
+                for layer in range(num_layer):
+
+                    fname = str(ID+1)+'_'+str(pic)+'_'+str(layer)+'.png'
+                    image_temp1[:,:,layer] = imresize(imread(match_path+fname).astype(np.int32),[image_size,image_size])
+
+                    fname = str(ID+1)+'_'+str(pic)+'_'+str(layer)+'.png'
+                    image_temp2[:,:,layer] = imresize(imread(mismatch_path+fname).astype(np.int32),[image_size,image_size])
+
+                images_match[str(ID+1)+'_'+str(pic)] = image_temp1
+                images_mismatch[str(ID+1)+'_'+str(pic)] = image_temp2
+
+    else:
+        
+        match_IDS = [f for f in os.listdir('../Fingerprint_Data/Processed_Full_CASIA/Match/') if 'DS' not in f]
+        mismatch_IDS = [f for f in os.listdir('../Fingerprint_Data/Processed_Full_CASIA/MisMatch/') if 'DS' not in f]
+        
+        for ID in match_IDS:
+
+            for pic in ['1', '0']:
+
+                image_temp = np.zeros((image_size,image_size,num_layer))
+
+                for layer in range(num_layer):
+
+                    fname = ID + '_' + pic + '_' + str(layer) + '.png'
+                    image_temp[:,:,layer] = imresize(imread(match_path+ID+'/'+fname).astype(np.int32),[image_size,image_size])
+
+                images_match[ID + '_' + pic] = image_temp
+                
+        for ID in mismatch_IDS:
+
+            for pic in ['1', '0']:
+
+                image_temp = np.zeros((image_size,image_size,num_layer))
+
+                for layer in range(num_layer):
+
+                    fname = ID + '_' + pic + '_' + str(layer) + '.png'
+                    image_temp[:,:,layer] = imresize(imread(mismatch_path+ID+'/'+fname).astype(np.int32),[image_size,image_size])
+
+                images_mismatch[ID + '_' + pic] = image_temp
+            
+    
             
     return images_match, images_mismatch
 
