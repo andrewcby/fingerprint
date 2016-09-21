@@ -1,0 +1,42 @@
+Iteration 0 AUC: 0.39 Loss: -4.77403 Distance: [ 0.19  0.19  0.18  0.18  0.2 ] Labels: [[0 0 0 0 0]]
+Model saved in file: training0.ckpt
+Iteration 100 AUC: 0.66 Loss: -24.492 Distance: [ 0.97  0.97  0.98  0.97  0.97] Labels: [[0 0 0 0 0]]
+Model saved in file: training100.ckpt
+Iteration 200 AUC: 0.87 Loss: -24.8491 Distance: [ 0.99  0.99  0.98  0.98  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training200.ckpt
+Iteration 300 AUC: 0.77 Loss: -24.9017 Distance: [ 0.99  0.99  0.99  0.99  0.99] Labels: [[0 0 0 0 0]]
+Model saved in file: training300.ckpt
+Iteration 400 AUC: 0.77 Loss: -24.909 Distance: [ 0.99  0.99  0.98  0.99  0.99] Labels: [[0 0 0 0 0]]
+Model saved in file: training400.ckpt
+Iteration 500 AUC: 0.68 Loss: -24.8922 Distance: [ 0.99  0.99  0.98  0.99  0.99] Labels: [[0 0 0 0 0]]
+Model saved in file: training500.ckpt
+Iteration 600 AUC: 0.69 Loss: -24.8652 Distance: [ 0.99  0.98  0.99  0.99  0.99] Labels: [[0 0 0 0 0]]
+Model saved in file: training600.ckpt
+Iteration 700 AUC: 0.72 Loss: -24.8344 Distance: [ 0.98  0.97  0.99  0.98  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training700.ckpt
+Iteration 800 AUC: 0.68 Loss: -24.7383 Distance: [ 0.98  0.98  0.98  0.99  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training800.ckpt
+Iteration 900 AUC: 0.74 Loss: -24.7841 Distance: [ 0.99  0.98  0.97  0.97  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training900.ckpt
+Iteration 1000 AUC: 0.88 Loss: -24.9 Distance: [ 0.99  0.98  0.98  0.98  0.99] Labels: [[0 0 0 0 0]]
+Model saved in file: training1000.ckpt
+Iteration 1100 AUC: 0.80 Loss: -24.8617 Distance: [ 0.98  0.99  0.98  0.99  0.95] Labels: [[0 0 0 0 0]]
+Model saved in file: training1100.ckpt
+Iteration 1200 AUC: 0.79 Loss: -24.8047 Distance: [ 0.98  0.99  0.99  0.98  0.97] Labels: [[0 0 0 0 0]]
+Model saved in file: training1200.ckpt
+Iteration 1300 AUC: 0.71 Loss: -24.7619 Distance: [ 0.98  0.99  0.98  0.99  0.99] Labels: [[0 0 0 0 0]]
+Model saved in file: training1300.ckpt
+Iteration 1400 AUC: 0.66 Loss: -24.7738 Distance: [ 0.98  0.97  0.98  0.99  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training1400.ckpt
+Iteration 1500 AUC: 0.75 Loss: -24.7758 Distance: [ 0.97  0.98  0.98  0.97  0.95] Labels: [[0 0 0 0 0]]
+Model saved in file: training1500.ckpt
+Iteration 1600 AUC: 0.76 Loss: -24.7722 Distance: [ 0.98  0.99  0.99  0.98  0.97] Labels: [[0 0 0 0 0]]
+Model saved in file: training1600.ckpt
+Iteration 1700 AUC: 0.67 Loss: -24.7378 Distance: [ 0.99  0.99  0.96  0.97  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training1700.ckpt
+Iteration 1800 AUC: 0.73 Loss: -24.7661 Distance: [ 0.97  0.97  0.97  0.98  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training1800.ckpt
+Iteration 1900 AUC: 0.72 Loss: -24.7106 Distance: [ 0.98  0.98  0.96  0.99  0.98] Labels: [[0 0 0 0 0]]
+Model saved in file: training1900.ckpt
+Iteration 2000 AUC: 0.85 Loss: -24.8409 Distance: [ 0.97  0.98  0.98  0.99  0.97] Labels: [[0 0 0 0 0]]
+Model saved in file: training2000.ckpt

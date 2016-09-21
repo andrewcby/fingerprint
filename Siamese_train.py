@@ -7,7 +7,7 @@ import os, random
 
 import numpy as np
 import tensorflow as tf
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 
 
 from sys import path
@@ -199,7 +199,6 @@ distance = tf.mul(tf.div(tf.reduce_sum(z*z_p, reduction_indices=1), z_norm*z_p_n
 cross_entropy = -tf.reduce_sum(distance, reduction_indices=1)
 
 train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
-sess = tf.InteractiveSession()
 
 auc_list = []
 
@@ -220,10 +219,14 @@ with tf.Session() as sess:
     sess.run(tf.initialize_all_variables())
     
     f = open('log.txt', 'w+')
-    for i in range(5):
+    for i in range(10000):
         batch = iF.generate_batch_pairs_from_preprocessed(images_match, images_mismatch, 50, image_size, num_layer)
+	
+	if i < 100:
+	    if i%10 == 0:
+		print i		
 
-        if i%2 == 0:
+        if i% 100 == 0:
             auc_batch = iF.generate_batch_pairs_from_preprocessed(images_match_small, images_mismatch_small, 50, image_size, num_layer)
             d =  abs_dist.eval(feed_dict={x:auc_batch[0], x_p:auc_batch[1], y_: auc_batch[2], keep_prob: 1.0})
             fpr, tpr, _ = roc_curve(auc_batch[2], d.T)

@@ -1,0 +1,2 @@
+Iteration 2000 AUC: 0.85 Loss: -24.8409 Distance: [ 0.97  0.98  0.98  0.99  0.97] Labels: [[0 0 0 0 0]]
+Model saved in file: training2000.ckpt
