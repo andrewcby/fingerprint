@@ -121,8 +121,11 @@ def generate_batch_pairs_from_preprocessed(images_match, images_mismatch, num, i
         x[mis_match+i,:] = np.reshape(img, (1,image_size*image_size*num_layer))
         x_p[mis_match+i,:] = np.reshape(img_p, (1,image_size*image_size*num_layer))
         y[mis_match+i] = 1
+
+    arr = np.arange(len(y))
+    np.random.shuffle(arr)
     
-    return [x, x_p, y]
+    return [x[arr,:], x_p[arr,:], y[arr]]
 
 
 def suffle_all(x, x_p, y):

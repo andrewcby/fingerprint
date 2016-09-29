@@ -1,2 +1,2 @@
-Iteration 3300 AUC: 0.82 Loss: -24.8195 Distance: [ 0.97  0.98  0.98  0.96  0.96] Labels: [[0 0 0 0 0]]
-Model saved in file: training3300.ckpt
+Iteration 800 AUC: 0.65 Loss: -24.8489 Distance: [ 0.99  0.98  0.99  0.99  0.99] Labels: [[0 0 1 0 1]]
+Model saved in file: Batch_75_training_800.ckpt
