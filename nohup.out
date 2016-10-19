@@ -1,0 +1,52 @@
+[W 00:16:16.877 NotebookApp] Unrecognized JSON config file version, assuming version 1
+[I 00:16:18.046 NotebookApp] [nb_conda_kernels] enabled, 1 kernels found
+[I 00:16:18.058 NotebookApp] Writing notebook server cookie secret to /run/user/1000/jupyter/notebook_cookie_secret
+[I 00:16:18.603 NotebookApp] ✓ nbpresent HTML export ENABLED
+[W 00:16:18.603 NotebookApp] ✗ nbpresent PDF export DISABLED: No module named nbbrowserpdf.exporters.pdf
+[I 00:16:18.609 NotebookApp] [nb_conda] enabled
+[I 00:16:18.737 NotebookApp] [nb_anacondacloud] enabled
+[I 00:16:18.742 NotebookApp] Serving notebooks from local directory: /home/ubuntu/fingerprint
+[I 00:16:18.742 NotebookApp] 0 active kernels 
+[I 00:16:18.742 NotebookApp] The Jupyter Notebook is running at: https://[all ip addresses on your system]:8888/
+[I 00:16:18.742 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 00:16:59.317 NotebookApp] SSL Error on 8 ('24.130.121.32', 60916): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[I 00:17:02.609 NotebookApp] 302 GET / (24.130.121.32) 0.70ms
+[I 00:17:02.661 NotebookApp] 302 GET /tree (24.130.121.32) 0.81ms
+[W 00:17:05.569 NotebookApp] 401 POST /login?next=%2Ftree (24.130.121.32) 5.72ms referer=https://ec2-52-32-185-17.us-west-2.compute.amazonaws.com:8888/login?next=%2Ftree
+[W 00:17:08.456 NotebookApp] 401 POST /login?next=%2Ftree (24.130.121.32) 1.48ms referer=https://ec2-52-32-185-17.us-west-2.compute.amazonaws.com:8888/login?next=%2Ftree
+[W 00:17:17.429 NotebookApp] 401 POST /login?next=%2Ftree (24.130.121.32) 5.39ms referer=https://ec2-52-32-185-17.us-west-2.compute.amazonaws.com:8888/login?next=%2Ftree
+[I 00:17:33.065 NotebookApp] Interrupted...
+[I 00:17:33.065 NotebookApp] Shutting down kernels
+[W 00:19:33.546 NotebookApp] Unrecognized JSON config file version, assuming version 1
+[I 00:19:34.066 NotebookApp] [nb_conda_kernels] enabled, 1 kernels found
+[I 00:19:34.333 NotebookApp] ✓ nbpresent HTML export ENABLED
+[W 00:19:34.333 NotebookApp] ✗ nbpresent PDF export DISABLED: No module named nbbrowserpdf.exporters.pdf
+[I 00:19:34.336 NotebookApp] [nb_conda] enabled
+[I 00:19:34.368 NotebookApp] [nb_anacondacloud] enabled
+[I 00:19:34.372 NotebookApp] Serving notebooks from local directory: /home/ubuntu/fingerprint
+[I 00:19:34.372 NotebookApp] 0 active kernels 
+[I 00:19:34.372 NotebookApp] The Jupyter Notebook is running at: https://[all ip addresses on your system]:8888/
+[I 00:19:34.372 NotebookApp] Use Control-C to stop this server and shut down all kernels (twice to skip confirmation).
+[W 00:19:46.770 NotebookApp] SSL Error on 9 ('24.130.121.32', 60954): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:46.771 NotebookApp] SSL Error on 8 ('24.130.121.32', 60953): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:47.961 NotebookApp] SSL Error on 8 ('24.130.121.32', 60956): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:47.995 NotebookApp] SSL Error on 9 ('24.130.121.32', 60957): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:48.479 NotebookApp] SSL Error on 8 ('24.130.121.32', 60958): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:48.497 NotebookApp] SSL Error on 9 ('24.130.121.32', 60959): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:49.051 NotebookApp] SSL Error on 8 ('24.130.121.32', 60960): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:49.095 NotebookApp] SSL Error on 9 ('24.130.121.32', 60961): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:51.261 NotebookApp] SSL Error on 8 ('24.130.121.32', 60962): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:51.350 NotebookApp] SSL Error on 8 ('24.130.121.32', 60963): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:52.881 NotebookApp] SSL Error on 8 ('24.130.121.32', 60964): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:52.986 NotebookApp] SSL Error on 8 ('24.130.121.32', 60965): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:54.338 NotebookApp] SSL Error on 8 ('24.130.121.32', 60966): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:54.483 NotebookApp] SSL Error on 8 ('24.130.121.32', 60967): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:55.666 NotebookApp] SSL Error on 8 ('24.130.121.32', 60968): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:55.778 NotebookApp] SSL Error on 8 ('24.130.121.32', 60969): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:56.917 NotebookApp] SSL Error on 8 ('24.130.121.32', 60970): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[W 00:19:57.018 NotebookApp] SSL Error on 8 ('24.130.121.32', 60971): [SSL: TLSV1_ALERT_UNKNOWN_CA] tlsv1 alert unknown ca (_ssl.c:590)
+[I 00:20:08.928 NotebookApp] 302 GET / (24.130.121.32) 0.68ms
+[I 00:20:08.990 NotebookApp] 302 GET /tree (24.130.121.32) 0.81ms
+[W 00:20:11.704 NotebookApp] 401 POST /login?next=%2Ftree (24.130.121.32) 1.51ms referer=https://ec2-52-32-185-17.us-west-2.compute.amazonaws.com:8888/login?next=%2Ftree
+[I 00:20:54.811 NotebookApp] Interrupted...
+[I 00:20:54.811 NotebookApp] Shutting down kernels
